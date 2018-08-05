@@ -23,12 +23,12 @@ const pipeline = new Pipeline([
   new Pipe(listGithubLanguages, 1),
   new Pipe(listLanguages, 1),
   new Pipe(listRepositories, 1),
-  new Pipe(skipKnownRepositories, 1),
-  new Pipe(deleteRepository, 1),
-  new Pipe(downloadRepository, 1),
-  new Pipe(makeRepositoryStats, 1),
-  new Pipe(saveRepositoryStats, 1),
-  new Pipe(deleteRepository, 1)
+  new Pipe(skipKnownRepositories, 5),
+  new Pipe(deleteRepository, 5),
+  new Pipe(downloadRepository, 5),
+  new Pipe(makeRepositoryStats, 5),
+  new Pipe(saveRepositoryStats, 5),
+  new Pipe(deleteRepository, 5)
 ])
 
 pipeline.put({}, './config.yml')
@@ -117,19 +117,17 @@ async function * listRepositories (data, lang) {
 }
 
 async function skipKnownRepositories (data, repo) {
-  const statsPath = path.join(data.config.statsDirectory, repo.name.replace('/', '.'))
+  const statsPath = path.join(data.config.statsDirectory, repo.name.replace('/', '.') + '.json')
 
   try {
     const stats = JSON.parse(await readFile(statsPath, 'UTF-8'))
   } catch (e) {
     // don't skip
-    console.log(`============= not skipping 1 ${repo.name} ========== ${e}`)
     return [data, repo]
   }
 
   // don't skip as there is a problem somewhere
   if (stats.name !== repo.name) {
-    console.log(`============= not skipping 2 ${repo.name} ========== ${stats.name} ${repo.name}`)
     return [data, repo]
   }
 
