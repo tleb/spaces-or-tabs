@@ -146,7 +146,7 @@ async function makeRepositoryStats (data, repo) {
   async function * fileContentGenerator () {
     const patterns = repo.language.extensions.map(ext => path.join(repo.path, '**/*' + ext))
 
-    for await (let path of asyncChunks(glob.stream(patterns))) {
+    for await (let path of asyncChunks(glob.stream(patterns, { followSymlinkedDirectories: false }))) {
       yield (await readFile(path, 'UTF-8')).trim('\n')
     }
   }
