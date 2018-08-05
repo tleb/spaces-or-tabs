@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@octokit/rest": "git://github.com/tleb/rest.js#escaped-query",
+    "double-ended-queue": "^2.1.0-0",
     "fast-glob": "^2.2.2",
     "got": "^8.3.2",
     "js-yaml": "^3.12.0",

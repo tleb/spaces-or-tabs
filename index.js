@@ -9,7 +9,7 @@ const mkdir = promisify(fs.mkdir)
 const utils = require('./utils.js')
 const glob = require('fast-glob')
 const path = require('path')
-const {Pipe, Pipeline} = require('./pipeline.js')
+const Pipeline = require('./pipeline.js')
 
 // TODO: PipeGroup to group Pipes so that there is a total of 10 workers on those 10 tasks
 // basically a Pipeline behaving like a Pipe which contains pipes :)
@@ -17,19 +17,19 @@ const {Pipe, Pipeline} = require('./pipeline.js')
 // check maxConcurrentTasks works...
 
 const pipeline = new Pipeline([
-  new Pipe(getConfig, 1),
-  new Pipe(getGithub, 1),
-  new Pipe(createStatsFolder, 1),
-  new Pipe(listGithubLanguages, 1),
-  new Pipe(listLanguages, 1),
-  new Pipe(listRepositories, 1),
-  new Pipe(skipKnownRepositories, 5),
-  new Pipe(deleteRepository, 5),
-  new Pipe(downloadRepository, 5),
-  new Pipe(makeRepositoryStats, 5),
-  new Pipe(saveRepositoryStats, 5),
-  new Pipe(deleteRepository, 5)
-])
+  getConfig,
+  getGithub,
+  createStatsFolder,
+  listGithubLanguages,
+  listLanguages,
+  listRepositories,
+  skipKnownRepositories,
+  deleteRepository,
+  downloadRepository,
+  makeRepositoryStats,
+  saveRepositoryStats,
+  deleteRepository
+], 10)
 
 pipeline.put({}, './config.yml')
 
@@ -131,7 +131,6 @@ async function skipKnownRepositories (data, repo) {
   if (stats.name !== repo.name) {
     return [data, repo]
   }
-
 }
 
 async function deleteRepository (data, repo) {
