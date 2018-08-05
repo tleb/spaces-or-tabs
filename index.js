@@ -18,6 +18,7 @@ const pipeline = new Pipeline([
   new Pipe(listGithubLanguages, 1),
   new Pipe(listLanguages, 1),
   new Pipe(listRepositories, 1),
+  new Pipe(skipKnownRepositories, 10),
   new Pipe(deleteRepository, 10),
   new Pipe(downloadRepository, 10),
   new Pipe(makeRepositoryStats, 10),
@@ -107,6 +108,22 @@ async function * listRepositories (data, lang) {
       path: `${reposDir}/${repo.full_name.replace('/', '.')}`
     }]
     if (--n <= 0) return
+  }
+}
+
+async function skipKnownRepositories (data, repo) {
+  const statsPath = path.join(data.config.statsDirectory, repo.name.replace('/', '.'))
+
+  try {
+    const stats = JSON.parse(await readFile(statsPath, 'UTF-8'))
+  } catch (e) {
+    // don't skip
+    return [data, repo]
+  }
+
+  // don't skip as there is a problem somewhere
+  if (stats.name !== repo.name) {
+    return [data, repo]
   }
 }
 
