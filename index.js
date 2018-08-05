@@ -29,7 +29,7 @@ const pipeline = new Pipeline([
   makeRepositoryStats,
   saveRepositoryStats,
   deleteRepository
-], 3)
+], 1)
 
 pipeline.put({}, './config.yml')
 
@@ -161,7 +161,6 @@ async function makeRepositoryStats (data, repo) {
   const stats = new utils.DefaultMap(0)
 
   for await (let fileContent of fileContentGenerator()) {
-    console.log('file')
     stats.increment('files')
 
     const lines = fileContent.split('\n')
