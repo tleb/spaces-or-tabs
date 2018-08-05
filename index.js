@@ -10,15 +10,11 @@ const utils = require('./utils.js')
 const glob = require('fast-glob')
 const path = require('path')
 const Pipeline = require('./pipeline.js')
-
-// TODO: PipeGroup to group Pipes so that there is a total of 10 workers on those 10 tasks
-// basically a Pipeline behaving like a Pipe which contains pipes :)
-//
-// check maxConcurrentTasks works...
+const asyncChunks = require('async-chunks')
 
 const pipeline = new Pipeline([
   getConfig,
-  getGithub,
+  authenticateGithub,
   createStatsFolder,
   listGithubLanguages,
   listLanguages,
@@ -39,7 +35,7 @@ async function getConfig (data, configPath) {
   return data
 }
 
-async function getGithub (data) {
+async function authenticateGithub (data) {
   octokit.authenticate({
     type: 'oauth',
     key: data.config.githubId,
@@ -150,7 +146,7 @@ async function makeRepositoryStats (data, repo) {
   async function * fileContentGenerator () {
     const patterns = repo.language.extensions.map(ext => path.join(repo.path, '**/*' + ext))
 
-    for (let path of await glob(patterns)) {
+    for await (let path of asyncChunks(glob.stream(patterns))) {
       yield (await readFile(path, 'UTF-8')).trim('\n')
     }
   }

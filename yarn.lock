@@ -208,6 +208,10 @@ assign-symbols@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/assign-symbols/-/assign-symbols-1.0.0.tgz#59667f41fadd4f20ccbc2bb96b8d4f7f78ec0367"
 
+async-chunks@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/async-chunks/-/async-chunks-1.1.0.tgz#c2293edf251d629e16e357d16010bab113be508d"
+
 atob@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/atob/-/atob-2.1.1.tgz#ae2d5a729477f289d60dd7f96a6314a22dd6c22a"
