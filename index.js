@@ -160,7 +160,8 @@ async function makeRepositoryStats (data, repo) {
   // 'files', 'lines', 'empty', 'notIndented', '\t', 1, 2, 3, 4, etc...
   const stats = new utils.DefaultMap(0)
 
-  for (let fileContent of await fileContentGenerator()) {
+  for await (let fileContent of fileContentGenerator()) {
+    console.log(`-- file -- ${fileContent.length}`)
     stats.increment('files')
 
     const lines = fileContent.split('\n')
