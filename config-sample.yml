@@ -1,0 +1,27 @@
+repositoriesDirectory: data
+statsDirectory: stats
+repositoriesPerLanguage: 10
+githubId:
+githubSecret:
+# github.com/github/linguist/blob/master/lib/linguist/languages.yml
+githubLanguagesUri: https://cdn.rawgit.com/github/linguist/master/lib/linguist/languages.yml
+languages:
+  - C
+  - C#
+  - C++
+  - Go
+  - HTML
+  - Haskell
+  - Java
+  - JavaScript
+  - Julia
+  - Lua
+  - OCaml
+  - Objective-C
+  - PHP
+  - Perl 6
+  - Python
+  - Ruby
+  - Rust
+  - Scala
+  - Swift
