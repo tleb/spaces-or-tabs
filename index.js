@@ -123,15 +123,16 @@ async function skipKnownRepositories (data, repo) {
     const stats = JSON.parse(await readFile(statsPath, 'UTF-8'))
   } catch (e) {
     // don't skip
+    console.log(`============= not skipping 1 ${repo.name} ========== ${e}`)
     return [data, repo]
   }
 
   // don't skip as there is a problem somewhere
   if (stats.name !== repo.name) {
+    console.log(`============= not skipping 2 ${repo.name} ========== ${stats.name} ${repo.name}`)
     return [data, repo]
   }
 
-  console.log(`============= skipping ${repo.name} ==========`)
 }
 
 async function deleteRepository (data, repo) {
