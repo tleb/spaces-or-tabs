@@ -25,7 +25,7 @@ const pipeline = new Pipeline([
   makeRepositoryStats,
   saveRepositoryStats,
   deleteRepository
-], 1)
+], 10)
 
 pipeline.put({}, './config.yml')
 
