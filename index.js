@@ -119,8 +119,9 @@ async function * listRepositories (data, lang) {
 async function skipKnownRepositories (data, repo) {
   const statsPath = path.join(data.config.statsDirectory, repo.name.replace('/', '.') + '.json')
 
+  let stats
   try {
-    const stats = JSON.parse(await readFile(statsPath, 'UTF-8'))
+    stats = JSON.parse(await readFile(statsPath, 'UTF-8'))
   } catch (e) {
     // don't skip
     return [data, repo]
