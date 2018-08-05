@@ -11,6 +11,11 @@ const glob = require('fast-glob')
 const path = require('path')
 const {Pipe, Pipeline} = require('./pipeline.js')
 
+// TODO: PipeGroup to group Pipes so that there is a total of 10 workers on those 10 tasks
+// basically a Pipeline behaving like a Pipe which contains pipes :)
+//
+// check maxConcurrentTasks works...
+
 const pipeline = new Pipeline([
   new Pipe(getConfig, 1),
   new Pipe(getGithub, 1),
@@ -18,12 +23,12 @@ const pipeline = new Pipeline([
   new Pipe(listGithubLanguages, 1),
   new Pipe(listLanguages, 1),
   new Pipe(listRepositories, 1),
-  new Pipe(skipKnownRepositories, 10),
-  new Pipe(deleteRepository, 10),
-  new Pipe(downloadRepository, 10),
-  new Pipe(makeRepositoryStats, 10),
-  new Pipe(saveRepositoryStats, 10),
-  new Pipe(deleteRepository, 10)
+  new Pipe(skipKnownRepositories, 1),
+  new Pipe(deleteRepository, 1),
+  new Pipe(downloadRepository, 1),
+  new Pipe(makeRepositoryStats, 1),
+  new Pipe(saveRepositoryStats, 1),
+  new Pipe(deleteRepository, 1)
 ])
 
 pipeline.put({}, './config.yml')
@@ -125,6 +130,8 @@ async function skipKnownRepositories (data, repo) {
   if (stats.name !== repo.name) {
     return [data, repo]
   }
+
+  console.log(`============= skipping ${repo.name} ==========`)
 }
 
 async function deleteRepository (data, repo) {
