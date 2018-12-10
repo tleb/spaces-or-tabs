@@ -4,7 +4,7 @@ repositoriesPerLanguage: 10
 githubId:
 githubSecret:
 # github.com/github/linguist/blob/master/lib/linguist/languages.yml
-githubLanguagesUri: https://cdn.rawgit.com/github/linguist/master/lib/linguist/languages.yml
+githubLanguagesUri: https://cdn.jsdelivr.net/gh/github/linguist@master/lib/linguist/languages.yml
 languages:
   - C
   - C#
